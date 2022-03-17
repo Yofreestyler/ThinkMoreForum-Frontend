@@ -18,11 +18,11 @@ import upload from '../../services/Img';
 import { uniqueUsername, uniqueEmail } from '../../services/Public';
 import {
   changeUsername,
-  changeProfileImg,
+  changeHeadImg,
   sendVerificationEmail,
 } from '../../services/Users';
 import {
-  setProfileImgAction,
+  setHeadImgAction,
   setUsernameAction,
 } from '../../store/actions/signAction';
 import UserCircleIcon from '../../icons/user-circle';
@@ -32,7 +32,7 @@ import ChangePicButton from './ChangePicButton';
 const Form = (props) => {
   const dispatch = useDispatch();
   const { myDetail } = useSelector((state) => state.sign);
-  const [profileImg, setProfileImg] = useState('');
+  const [headImg, setHeadImg] = useState('');
 
   const formikUsername = useFormik({
     enableReinitialize: true,
@@ -50,18 +50,10 @@ const Form = (props) => {
       changeUsername(values.username)
         .then(() => {
           hotToast('success', 'Username is changed');
-          dispatch(
-            setUsernameAction(
-              values.username,
-              () => {},
-              (fail) => {
-                hotToast('error', `Something wrong: ${fail}`);
-              },
-            ),
-          );
+          dispatch(setUsernameAction(values.username));
         })
-        .catch((error) => {
-          hotToast('error', `Something wrong: ${error}`);
+        .catch(() => {
+          hotToast('error', 'Username is already taken');
         });
     },
   });
@@ -83,23 +75,23 @@ const Form = (props) => {
         .then(() => {
           hotToast('success', 'Verification email is sent');
         })
-        .catch((error) => {
-          hotToast('error', `Something wrong: ${error}`);
+        .catch(() => {
+          hotToast('error', 'Email is already in use');
         });
     },
   });
 
   const handleDropImg = async ([file]) => {
     const data = await fileToBase64(file);
-    setProfileImg(data);
+    setHeadImg(data);
     const { data: img } = await upload(file).catch((error) => {
       hotToast('error', `Something wrong: ${error}`);
     });
-    changeProfileImg({ profileImgUrl: img.url })
+    changeHeadImg({ headImgUrl: img.url })
       .then(() => {
         hotToast('success', 'Profile picture is changed');
         dispatch(
-          setProfileImgAction(
+          setHeadImgAction(
             img.url,
             () => {},
             (fail) => {
@@ -137,7 +129,7 @@ const Form = (props) => {
                   }}
                 >
                   <Avatar
-                    src={profileImg || myDetail.profileImgUrl}
+                    src={headImg || myDetail.headImgUrl}
                     sx={{
                       height: 64,
                       mr: 2,

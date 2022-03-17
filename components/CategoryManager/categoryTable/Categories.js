@@ -16,7 +16,7 @@ import {
 import styled from 'styled-components';
 import CategoryForm from './CategoryForm';
 import useTable from '../useTable';
-import * as categoryServices from '../../../services/categoryService';
+import * as categoryServices from '../../../services/Category';
 import Controls from '../controls/Controls';
 import Popup from '../Popup';
 import Notification from '../Notification';
@@ -100,10 +100,10 @@ const Category = () => {
     });
   };
 
-  const edit = async (category, resetForm) => {
+  const edit = async (category) => {
     // categoryServices.updateCategory(category);
     // else categoryServices.updateEmployee(category);
-    resetForm();
+    // resetForm();
     const updateCategories = (updatedCategory, oldRecords) => {
       const newCategoryID = updatedCategory.id || updatedCategory.fakeID;
       console.log('newCategoryID', newCategoryID);
@@ -120,11 +120,6 @@ const Category = () => {
     setRecords(newCategories);
     setRecordForEdit(null);
     setOpenPopup(false);
-    setNotify({
-      isOpen: true,
-      message: 'Submitted Successfully',
-      type: 'success',
-    });
   };
 
   const openInPopup = (item) => {

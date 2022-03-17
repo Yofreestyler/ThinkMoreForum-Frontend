@@ -17,7 +17,7 @@ import {
 import {
   changeCategoryPinPost,
   deleteCategoryPinPost,
-} from '../../services/categoryService';
+} from '../../services/Category';
 import { createComment } from '../../services/Comment';
 import PostContent from '../../components/Post/PostContent';
 import AntComment from '../../components/AntComment';
@@ -115,7 +115,7 @@ const Post = ({ post }) => {
   };
   const handleUnpinPost = async (categoryId) => {
     try {
-      await deleteCategoryPinPost(categoryId);
+      deleteCategoryPinPost(categoryId);
     } catch (err) {
       hotToast('error', err.message);
     }
